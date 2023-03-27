@@ -8,7 +8,14 @@ let server;
 const http = require('http');
 
 server = http.createServer((req, res) => {
-
+    let reqBody = '';
+    req.on("data", chunk => {
+        reqBody += chunk.toString();
+    })
+    req.on("end", () => {
+        req.body = parseBody(reqBody);
+        sendFormPage(req, res);
+    });
 });
 
 const port = 5000;
